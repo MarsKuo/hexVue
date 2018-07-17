@@ -105,8 +105,14 @@
 
 <script>
 // #1 使用展開語法，合併以下陣列
-let groupA = ['小明', '杰倫', '阿姨'];
-let groupB = ['老媽', '老爸'];
+// let groupA = ['小明', '杰倫', '阿姨'];
+// let groupB = ['老媽', '老爸'];
+
+// //let groupAll = groupA.concat(groupB);
+// let groupAll = [...groupA,...groupB];
+// console.log(groupAll);
+
+
 
 // #2 淺複製觀念說明 (shallow copy)
 // let groupA = ['小明', '杰倫', '阿姨'];
@@ -114,15 +120,42 @@ let groupB = ['老媽', '老爸'];
 // groupB.push('阿明');
 // console.log(groupA); // 請問此時的 groupA 值為何
 
+//如果groupB想要當作新陣列，可以用spread
+// let groupA = ['小明', '杰倫', '阿姨'];
+// let groupB = [...groupA];
+// groupB.push('阿明');
+//console.log(groupA); // 請問此時的 groupA 值為何
+
+
+
 
 // #3 類陣列觀念說明
 // let doms = document.querySelectorAll('li');
-// console.log(doms);
+
+// let newDoms = [...doms];
+
+
+// if(newDoms ===  newDoms.concat() )
+// {
+//   console.log('aaaa')
+// }else{
+//   console.log('bbbb');
+// }
+
+// console.log(newDoms);
+// console.log(newDoms.concat());
+//  console.log(doms);
+
 
 // #4 類陣列觀念說明
 // var originCash = 1000;
 // function updateEasyCard() {
 //   let arg = arguments
+//   console.log(arg);
+
+//   let arg1 = [...arguments]
+//   console.log(arg1);
+
 //   // let sum = arg.reduce(function (accumulator, currentValue) {
 //   //   return accumulator + currentValue;
 //   // }, 0);
@@ -133,10 +166,11 @@ let groupB = ['老媽', '老爸'];
 
 
 // #5 其餘參數
-// function moreMoney(...money) {
-//   // console.log(money);
-// }
-// moreMoney(100, 100, 100)
+function moreMoney(aaa,...money) {
+  console.log(aaa);
+  console.log(aaa,money);
+}
+moreMoney('小名',100, 100, 100)
 </script> 
         </div>
       </div>
