@@ -1,9 +1,6 @@
 <template>
   <div id="app">
-    <img src="./assets/logo.png">
     <router-view/>
-
-    <button class="btn btn-primary">123124</button>
   </div>
 </template>
 
@@ -11,11 +8,11 @@
 export default {
   name: 'App',
   created() {
-    const api = `${process.env.APIPATH}/api/${process.env.CUSTOMPATH}/products'`;
-    console.log(api);
-    this.$http.get(api).then(response => {
-      console.log(response.data);
-    });
+    // const api = `${process.env.APIPATH}/api/${process.env.CUSTOMPATH}'`;
+    // console.log(api);
+    // this.$http.get(api).then(response => {
+    //   console.log(response.data);
+    // });
   }
 };
 </script>
