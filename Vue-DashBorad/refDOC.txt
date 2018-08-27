@@ -1,0 +1,18 @@
+https://github.com/hexschool/vue-course-api-wiki/wiki/%E9%80%B2%E5%BA%A6-Commit
+
+
+
+api
+https://vue-course-api.hexschool.io/
+
+
+doc
+https://github.com/hexschool/vue-course-api-wiki/wiki/%E7%99%BB%E5%85%A5%E5%8F%8A%E9%A9%97%E8%AD%89
+
+
+github
+https://github.com/MarsKuo/hexVue/tree/master/Vue-DashBorad
+
+
+Vue Router
+https://router.vuejs.org/zh/guide/advanced/navigation-guards.html#%E5%85%A8%E5%B1%80%E5%AE%88%E5%8D%AB
