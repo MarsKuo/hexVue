@@ -22,10 +22,10 @@
           <td>{{ item.category }}</td>
           <td>{{ item.title }}</td>
           <td class="text-right">
-            {{ item.origin_price}}
+            {{ item.origin_price | currency}}
           </td>
           <td class="text-right">
-            {{ item.price}}
+            {{ item.price | currency}}
           </td>
           <td>
             <span v-if="item.is_enabled" class="text-success">啟用</span>
@@ -40,6 +40,26 @@
         </tr>
       </tbody>
     </table>
+    <Pagination :pages="pagination" @emitPages="getProducts"></Pagination>
+    <!-- <nav aria-label="Page navigation example">
+      <ul class="pagination">
+        <li class="page-item" :class="{'disabled': !pagination.has_pre }">
+          <a class="page-link" href="#" aria-label="Previous" @click.prevent="getProducts(pagination.current_page - 1)">
+            <span aria-hidden="true">&laquo;</span>
+            <span class="sr-only">Previous</span>
+          </a>
+        </li>
+        <li class="page-item" v-for="page in pagination.total_pages" :key="page" :class="{'active': pagination.current_page === page}">
+          <a class="page-link" href="#" @click.prevent="getProducts(page)">{{ page }}</a>
+        </li>
+        <li class="page-item" :class="{'disabled': !pagination.has_next }">
+          <a class="page-link" href="#" aria-label="Next" @click.prevent="getProducts(pagination.current_page + 1)">
+            <span aria-hidden="true">&raquo;</span>
+            <span class="sr-only">Next</span>
+          </a>
+        </li>
+      </ul>
+    </nav> -->
     <!-- Modal -->
     <div class="modal fade" id="productModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
       <div class="modal-dialog modal-lg" role="document">
@@ -61,7 +81,7 @@
                 </div>
                 <div class="form-group">
                   <label for="customFile">或 上傳圖片
-                    <i class="fas fa-spinner fa-spin"></i>
+                    <i class="fas fa-spinner fa-spin" v-if="status.fileUploading"></i>
                   </label>
                   <input type="file" id="customFile" class="form-control" ref="files" @change="uploadFile">
                 </div>
@@ -149,20 +169,28 @@
 
 <script>
 import $ from 'jquery';
+import Pagination from '../Pagination';
 export default {
   data() {
     return {
       products: [],
       tempProduct: {},
       isNew: false,
-      isLoading: false
+      isLoading: false,
+      pagination: {},
+      status: {
+        fileUploading: false
+      }
     };
   },
+  components: {
+    Pagination
+  },
   methods: {
-    getProducts() {
+    getProducts(page = 1) {
       const api = `${process.env.APIPATH}/api/${
         process.env.CUSTOMPATH
-      }/products`; // 'http://localhost:3000/api/casper/products';
+      }/products?page=${page}`; // 'http://localhost:3000/api/casper/products';
       const vm = this;
       console.log(process.env.APIPATH, process.env.CUSTOMPATH);
       vm.isLoading = true;
@@ -170,6 +198,7 @@ export default {
         console.log(response.data);
         vm.products = response.data.products;
         vm.isLoading = false;
+        vm.pagination = response.data.pagination;
       });
     },
     openModal(isNew, item) {
@@ -232,6 +261,7 @@ export default {
       const url = `${process.env.APIPATH}/api/${
         process.env.CUSTOMPATH
       }/admin/upload`;
+      vm.status.fileUploading = true;
       this.$http
         .post(url, formData, {
           headers: {
@@ -240,10 +270,13 @@ export default {
         })
         .then(response => {
           console.log(response.data);
+          vm.status.fileUploading = false;
           if (response.data.success) {
             // vm.tempProduct.imageUrl = response.data.imageUrl;
             // console.log(vm.tempProduct);
             vm.$set(vm.tempProduct, 'imageUrl', response.data.imageUrl);
+          } else {
+            this.$bus.$emit('messsage:push', response.data.message, 'danger');
           }
         });
     }
